@@ -119,8 +119,8 @@ http {
             proxy_next_upstream     error timeout http_500 http_502 http_503 http_504;
 
             #proxy_intercept_errors on;
-            #error_page 500 503 504 /health/ready;
-            #error_page 300 301 301 303 304 /health/ready;
+            #error_page 500 501 503 504 /countries/health/ready;
+            #error_page 300 301 301 303 304 /countries/health/ready;
 
         }
 
@@ -141,7 +141,6 @@ http {
     }
  
 }
-
 ```
 
 ## Running the code,
