@@ -26,6 +26,21 @@ To run In background,
 [Docker Version](../master/sample-images/docker-version.png)
 
 
+## Dockerfiles
+
+Countries:
+
+```
+FROM openjdk:8u171-jdk-stretch
+MAINTAINER Vineeth "vineethvijay777@gmail.com"
+
+WORKDIR /code
+EXPOSE 8080
+
+ENTRYPOINT java -jar /code/run.jar
+
+```
+
 ## Running the code,
 
 ```
