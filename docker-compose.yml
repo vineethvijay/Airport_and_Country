@@ -1,0 +1,22 @@
+version: '3'
+services:
+
+  nginx:
+    build: nginx
+    ports:
+      - "80:80"
+    restart: always
+
+  countries:
+    build: countries
+    ports:
+     - "8080:8080"
+    volumes:
+     - ./countries:/code
+
+  airport:
+    build: airport
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./airport:/code
