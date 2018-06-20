@@ -43,9 +43,15 @@ rm airport/RUNNING_PID
 
 Running snippet :
 
-```vineeth:Devops_Assignment vineeth_vijay$ ./clean.sh
+```
+vineeth:Devops_Assignment vineeth_vijay$ ./clean.sh
 Stopping devops_assignment_nginx_1 ... done
 Removing devops_assignment_nginx_1     ... done
 Removing devops_assignment_countries_1 ... done
 Removing devops_assignment_airports_1  ... done
 Removing network devops_assignment_default
+```
+
+
+
+
