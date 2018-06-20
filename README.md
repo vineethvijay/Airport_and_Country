@@ -11,16 +11,13 @@ To run In background,
 
 ## What you need
 
-https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png
+1.Running docker service,
 
 ![alt text](https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png )
 
+2. Version,
 
 
-<p align="center">
-  <img src="sample-images/docker-runnin.pn" width="350"/>
-  <img src="ysample-images/docker-runnin.pn" width="350"/>
-</p>
 
 
 Browse for,
