@@ -1,6 +1,6 @@
 worker_processes 1;
 
-events { worker_connections 1024; }
+events { worker_connections 512; }
 
 http {
 
@@ -25,9 +25,9 @@ http {
         listen 80;
 
         # Proxying the connections connections
-        location /get {
+        location /countries {
 
-            proxy_pass         http://work_countries_1:8080;
+            proxy_pass         http://countries:8080;
             proxy_redirect     off;
             proxy_set_header   Host $host;
             proxy_set_header   X-Real-IP $remote_addr;
