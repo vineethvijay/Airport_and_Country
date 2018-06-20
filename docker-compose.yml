@@ -5,8 +5,11 @@ services:
     build: nginx
     ports:
       - "8000:8000"
+    links:
+      - countries
+      - airports
     restart: always
-
+    
   countries:
     build: countries
     ports:
