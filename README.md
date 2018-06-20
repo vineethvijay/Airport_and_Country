@@ -5,9 +5,18 @@ Intial stack startup:
 
 ```docker-compose up --build ```
 
-In background,
+To run In background,
 
 ```docker-compose up -d --build ```
+
+## What you need
+
+https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png
+
+![alt text](https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png)
+
+
+
 
 Browse for,
 
