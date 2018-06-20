@@ -13,13 +13,13 @@ To run In background,
 
 1. Running docker service,
 
-[Docker Running](../master/sample-images/docker-runnin.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Docker Running](../master/sample-images/docker-runnin.png)
 
 <!---![alt text](https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png )--->
 
 2. Docker Version,
 
-[Docker Version](../master/sample-images/docker-version.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Docker Version](../master/sample-images/docker-version.png)
 
 
 Browse for,
