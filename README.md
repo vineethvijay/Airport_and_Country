@@ -33,8 +33,9 @@ http://localhost:8000/<endpoints>
 
 ```bash clean.sh```
 
-```  #!/bin/bash 
-  docker-compose down 
-  rm countries/RUNNING_PID 
-  rm airport/RUNNING_PID 
+```
+#!/bin/bash 
+docker-compose down 
+rm countries/RUNNING_PID 
+rm airport/RUNNING_PID 
 ```
