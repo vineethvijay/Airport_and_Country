@@ -14,7 +14,7 @@ services:
     volumes:
      - ./countries:/code
 
-  airport:
+  airports:
     build: airport
     ports:
       - "8090:8080"
