@@ -17,7 +17,7 @@ To run In background,
 
 2. Version,
 
-
+[Docker Version](../master/sample-images/docker-version.png)
 
 
 Browse for,
