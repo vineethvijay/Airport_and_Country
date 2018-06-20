@@ -13,19 +13,27 @@ To run In background,
 
 1. Running docker service,
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Docker Running](../master/sample-images/docker-runnin.png)
+[Docker Running](../master/sample-images/docker-runnin.png)
 
 <!---![alt text](https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png )--->
 
 2. Docker Version,
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Docker Version](../master/sample-images/docker-version.png)
+[Docker Version](../master/sample-images/docker-version.png)
 
 
-Browse for,
+
+
+## Testing results,
 
 http://localhost:8000/<endpoints>
 
-Cleanup incase containers exits with leaving RUNNING_PID
+
+## Cleanup incase containers exits with leaving RUNNING_PID
 
 ```bash clean.sh```
+
+  #!/bin/bash
+  docker-compose down
+  rm countries/RUNNING_PID
+  rm airport/RUNNING_PID
