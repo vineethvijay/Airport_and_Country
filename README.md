@@ -26,9 +26,9 @@ To run In background,
 [Docker Version](../master/sample-images/docker-version.png)
 
 
-## Dockerfiles
+## Config and Dockerfiles
 
-Countries:
+Countries Service :
 
 ```
 FROM openjdk:8u171-jdk-stretch
@@ -37,6 +37,110 @@ WORKDIR /code
 EXPOSE 8080
 
 ENTRYPOINT java -jar /code/run.jar
+
+```
+
+Airports Service :
+
+```
+FROM openjdk:8u171-jdk-stretch
+
+WORKDIR /code
+
+ENTRYPOINT java -jar /code/run.jar
+```
+
+Nginx Reverse Proxy :
+
+```
+FROM nginx:alpine
+
+ADD nginx.conf /etc/nginx/nginx.conf
+```
+
+
+nginx.conf :
+
+```
+worker_processes 1;
+ 
+events { worker_connections 512; }
+ 
+http {
+ 
+    sendfile on;
+
+    server {
+        listen 80;
+        server_name localhost;
+        
+        location / {
+            return 503 "503";
+        }
+
+    }
+
+    upstream countries-server-health {
+        server countries:8080 fail_timeout=1s;
+        server localhost:80;
+    }
+
+  
+    upstream countries-server {
+        server countries:8080;
+    }
+
+    upstream airport-server {
+        server airports:8080;
+    }
+ 
+
+    server {
+        listen 8000;
+ 
+        location /countries {
+
+            proxy_pass         http://countries-server;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+
+        }
+
+        location /countries/health/live {
+            return 200 "200";
+        }
+
+        location /countries/health/ready {
+            proxy_pass         http://countries-server-health/countries;
+            proxy_redirect     off;
+
+
+            proxy_read_timeout   1s;
+            proxy_next_upstream     error timeout http_500 http_502 http_503 http_504;
+
+            #proxy_intercept_errors on;
+            #error_page 500 503 504 /health/ready;
+            #error_page 300 301 301 303 304 /health/ready;
+
+        }
+
+
+        location /airports {
+
+            proxy_pass         http://airport-server;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+
+        }
+
+        location /airports/health/live {
+            return 200 "200";
+        }
+
+
+    }
+ 
+}
 
 ```
 
