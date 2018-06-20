@@ -1,11 +1,11 @@
 # Devops_Assignment
 
-# Running 2 isolated microservices behind loadbalancer using Docker
+### Running 2 isolated microservices behind loadbalancer using Docker
 
 
-[ Note : System Used : macOS High Sierra ]
+[ System Used : macOS High Sierra ]
 
-Intial stack startup:
+## Intial stack startup:
 
 ```docker-compose up --build ```
 
