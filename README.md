@@ -13,7 +13,7 @@ To run In background,
 
 https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png
 
-![alt text](https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png)
+![alt text](https://github.com/vineethvijay/Devops_Assignment/blob/master/sample-images/docker-runnin.png )
 
 
 
