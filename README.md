@@ -48,6 +48,4 @@ Stopping devops_assignment_nginx_1 ... done
 Removing devops_assignment_nginx_1     ... done
 Removing devops_assignment_countries_1 ... done
 Removing devops_assignment_airports_1  ... done
-Removing network devops_assignment_default```
-
-
+Removing network devops_assignment_default
