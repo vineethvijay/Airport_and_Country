@@ -8,7 +8,8 @@ services:
       - "8000:8000"
     links:
       - countries
-      - airports
+      - airports1
+      - airports2
     restart: always
     
   countries:
@@ -18,9 +19,16 @@ services:
     volumes:
      - ./countries:/code
 
-  airports:
-    build: airport
+  airports1:
+    build: airport1
     ports:
       - "8090:8080"
+    volumes:
+      - ./airport:/code
+
+  airports2:
+    build: airport2
+    ports:
+      - "8095:8080"
     volumes:
       - ./airport:/code
