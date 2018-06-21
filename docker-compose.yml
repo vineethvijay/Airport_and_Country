@@ -24,11 +24,11 @@ services:
     ports:
       - "8090:8080"
     volumes:
-      - ./airport:/code
+      - ./airport1:/code
 
   airports2:
     build: airport2
     ports:
       - "8095:8080"
     volumes:
-      - ./airport:/code
+      - ./airport2:/code
