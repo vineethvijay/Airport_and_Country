@@ -16,12 +16,14 @@ then
 	cp -f deploy/airports-assembly-1.1.0.jar airport2/run.jar
 	rm airport2/RUNNING_PID
 	docker-compose start airports2
+	docker-compose restart nginx
 elif [ $deploy_to_container == "airports1" ]
 then
 	docker-compose stop airports1
 	cp -f deploy/airports-assembly-1.1.0.jar airport1/run.jar
 	rm airport1/RUNNING_PID
 	docker-compose start airports1
+	docker-compose restart nginx
 else
 	echo "No matching container name"
 
