@@ -144,6 +144,54 @@ http {
 }
 ```
 
+Notes :
+
+
+```
+    upstream countries-server {
+        server countries:8080 fail_timeout=1s;
+        server nginx:80 backup;
+    }
+
+```
+
+
+Here the upstream server for both services is distributed to application service endpoint and also to an nginx 80 port with `fail_timeouts` and `backup` directives,  which is used to get the `health/ready` of the service.
+
+ 
+[Nginx upstream Doc](http://nginx.org/en/docs/http/ngx_http_upstream_module.html)
+
+## Whole stack as code - docker-compose
+
+```
+version: '3'
+services:
+
+  nginx:
+    build: nginx
+    #command: "echo 'Running nginx reverse proxy.. Service up.. Listening on 0.0.0.0:8000'"
+    ports:
+      - "8000:8000"
+    links:
+      - countries
+      - airports
+    restart: always
+    
+  countries:
+    build: countries
+    ports:
+     - "8080:8080"
+    volumes:
+     - ./countries:/code
+
+  airports:
+    build: airport
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./airport:/code
+```
+
 ## Running the code,
 
 ```
@@ -200,12 +248,60 @@ countries_1  | [info] application - Start loading Countries
 
 ```
 
-## Testing results,
+# Testing results,
 
-http://localhost:8000/<endpoints>
+## Countries
+
+### To check countries service HTTP server is up,
+
+http://localhost:8000/countries/health/live
+
+### To check countries service is ready,
+
+http://localhost:8000/countries/health/ready
+
+[http response status returned "503" - when initializing, 200 when service up ]
 
 
-### Cleanup incase containers exits with leaving RUNNING_PID
+### To search for countries services,
+
+http://localhost:8000/countries
+
+
+### To search for countries services - country by name / ISO code.
+
+http://localhost:8000/countries/<code>
+
+eg: http://localhost:8000/countries/AD
+
+
+## Airports
+
+### To check airports service HTTP server is up,
+
+http://localhost:8000/airports/health/live
+
+### To check airports service is ready,
+
+http://localhost:8000/airports/health/ready
+
+[http response status returned "503" - when initializing, 200 when service up ]
+
+
+### To search for airports services,
+
+http://localhost:8000/airports
+
+
+### To search for airports services -  by name / ISO code.
+
+http://localhost:8000/airports/<code>
+
+eg: http://localhost:8000/airports/NL
+
+
+
+## Cleanup incase containers exits with leaving RUNNING_PID
 
 ```bash clean.sh```
 
