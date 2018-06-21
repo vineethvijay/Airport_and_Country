@@ -10,7 +10,6 @@ services:
       - countries
       - airports1
       - airports2
-    restart: always
     
   countries:
     build: countries
