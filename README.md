@@ -67,18 +67,17 @@ nginx.conf :
 ```
 
 
-
 worker_processes 1;
- 
+
 events { worker_connections 512; }
- 
+
 http {
- 
+
     sendfile on;
 
     server {
         listen 80;
-        
+
         location /countries {
             return 503 "503";
         }
@@ -96,15 +95,15 @@ http {
 
 
     upstream airports-server {
-        server airports1:8080 fail_timeout=1s max_fails=5;
-        server airports2:8080 fail_timeout=1s;
-        server nginx:80 backup;
+        server airports1:8080 backup;
+        server airports2:8080 backup;
+        #server nginx:80 backup;
     }
- 
+
 
     server {
         listen 8000;
- 
+
         location /countries {
 
             proxy_pass         http://countries-server;
@@ -140,13 +139,14 @@ http {
         location /airports/health/ready {
             proxy_pass         http://airports-server/airports;
             proxy_redirect     off;
-            proxy_read_timeout   1s;
+            proxy_read_timeout   2s;
 
         }
 
     }
- 
+
 }
+
 
 ```
 
