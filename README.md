@@ -144,6 +144,21 @@ http {
 }
 ```
 
+Notes :
+
+
+```
+    upstream countries-server {
+        server countries:8080 fail_timeout=1s;
+        server nginx:80 backup;
+    }
+
+```
+
+
+Here the upstream server for both services is distributed to application service endpoint and also to an nginx 80 port with `fail_timeouts` and `backup` directives,  which is used to get the `health/ready` of the service.
+
+
 ## Whole stack as code - docker-compose
 
 ```
