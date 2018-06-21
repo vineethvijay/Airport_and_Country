@@ -1,9 +1,8 @@
 # Devops_Assignment 
 
-## with failover deployment to airport service version2
 
 ### Running 2 isolated microservices behind loadbalancer using Docker
-
+## with failover deployment to airport service version2
 
 [ System Used : macOS High Sierra ]
 
