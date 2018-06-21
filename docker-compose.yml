@@ -14,21 +14,15 @@ services:
     
   countries:
     build: countries
-    ports:
-     - "8080:8080"
     volumes:
      - ./countries:/code
 
   airports1:
     build: airport1
-    ports:
-      - "8090:8080"
     volumes:
       - ./airport1:/code
 
   airports2:
     build: airport2
-    ports:
-      - "8095:8080"
     volumes:
       - ./airport2:/code
