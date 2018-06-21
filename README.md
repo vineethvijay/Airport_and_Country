@@ -158,6 +158,8 @@ Notes :
 
 Here the upstream server for both services is distributed to application service endpoint and also to an nginx 80 port with `fail_timeouts` and `backup` directives,  which is used to get the `health/ready` of the service.
 
+ 
+![Nginx upstream doc](http://nginx.org/en/docs/http/ngx_http_upstream_module.html )
 
 ## Whole stack as code - docker-compose
 
