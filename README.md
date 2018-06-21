@@ -37,7 +37,6 @@ Countries Service :
 FROM openjdk:8u171-jdk-stretch
 
 WORKDIR /code
-EXPOSE 8080
 
 ENTRYPOINT java -jar /code/run.jar
 
