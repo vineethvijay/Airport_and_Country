@@ -144,6 +144,37 @@ http {
 }
 ```
 
+## Whole stack as code - docker-compose
+
+```
+version: '3'
+services:
+
+  nginx:
+    build: nginx
+    #command: "echo 'Running nginx reverse proxy.. Service up.. Listening on 0.0.0.0:8000'"
+    ports:
+      - "8000:8000"
+    links:
+      - countries
+      - airports
+    restart: always
+    
+  countries:
+    build: countries
+    ports:
+     - "8080:8080"
+    volumes:
+     - ./countries:/code
+
+  airports:
+    build: airport
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./airport:/code
+```
+
 ## Running the code,
 
 ```
