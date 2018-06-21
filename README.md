@@ -253,7 +253,7 @@ eg: http://localhost:8000/airports/NL
 
 
 
-### Cleanup incase containers exits with leaving RUNNING_PID
+## Cleanup incase containers exits with leaving RUNNING_PID
 
 ```bash clean.sh```
 
