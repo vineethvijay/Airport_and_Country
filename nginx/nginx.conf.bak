@@ -1,39 +1,106 @@
+#working conf with 503 statys from 80 block
+
 worker_processes 1;
-
+ 
 events { worker_connections 512; }
-
+ 
 http {
-
+ 
     sendfile on;
 
-    gzip              on;
-    gzip_http_version 1.0;
-    gzip_proxied      any;
-    gzip_min_length   500;
-    gzip_disable      "MSIE [1-6]\.";
-    gzip_types        text/plain text/xml text/css
-                      text/comma-separated-values
-                      text/javascript
-                      application/x-javascript
-                      application/atom+xml;
-
-
-    # Configuration for the server
     server {
-
-        # Running port
         listen 80;
+        #server_name localhost;
+        
+        location /countries {
+            return 503 "503 from 80 block";
+        }
 
-        # Proxying the connections connections
+    }
+
+    upstream countries-server-health {
+        server countries:8080 fail_timeout=1s;
+        server nginx:80 backup;
+    }
+
+  
+    upstream countries-server {
+        server countries:8080;
+    }
+
+    upstream airport-server {
+        server airports:8080;
+    }
+ 
+
+    server {
+        listen 8000;
+ 
         location /countries {
 
-            proxy_pass         http://countries:8080;
+            proxy_intercept_errors on;
+            proxy_pass         http://countries-server-health;
             proxy_redirect     off;
             proxy_set_header   Host $host;
-            proxy_set_header   X-Real-IP $remote_addr;
-            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header   X-Forwarded-Host $server_name;
+
+
+            #recursive_error_pages on;
+            #error_page 500 502 503 504 = /503.html;
+
+
+            #proxy_read_timeout   1s;
+            #proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+
+
+       # location /countries/503.html {
+       #     return 503 "503";
+       # }
+
 
         }
+
+
+        location /countries/health/live {
+            return 200 "200";
+        }
+
+        location /countries/health/ready {
+            proxy_pass         http://countries-server-health/countries;
+            proxy_redirect     off;
+
+
+            proxy_read_timeout   1s;
+            #proxy_next_upstream     error timeout invalid_header http_500 http_502 http_503 http_504;
+
+
+            if ($status = 503 ) {
+                return 503 "503 from rule";
+            }
+
+            if ($status = 200 ) {
+                return 200 "200";
+            }
+
+            #proxy_intercept_errors on;
+            #error_page 500 501 503 504 /countries/health/ready;
+            #error_page 300 301 301 303 304 /countries/health/ready;
+
+        }
+
+
+        location /airports {
+
+            proxy_pass         http://airport-server;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+
+        }
+
+        location /airports/health/live {
+            return 200 "200";
+        }
+
+
     }
+ 
 }
