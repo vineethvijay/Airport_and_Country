@@ -67,6 +67,7 @@ nginx.conf :
 ```
 
 
+
 worker_processes 1;
  
 events { worker_connections 512; }
@@ -95,7 +96,8 @@ http {
 
 
     upstream airports-server {
-        server airports:8080 fail_timeout=1s;
+        server airports1:8080 fail_timeout=1s max_fails=5;
+        server airports2:8080 fail_timeout=1s;
         server nginx:80 backup;
     }
  
@@ -145,6 +147,7 @@ http {
     }
  
 }
+
 ```
 
 Notes :
@@ -177,22 +180,24 @@ services:
       - "8000:8000"
     links:
       - countries
-      - airports
-    restart: always
+      - airports1
+      - airports2
     
   countries:
     build: countries
-    ports:
-     - "8080:8080"
     volumes:
      - ./countries:/code
 
-  airports:
-    build: airport
-    ports:
-      - "8090:8080"
+  airports1:
+    build: airport1
     volumes:
-      - ./airport:/code
+      - ./airport1:/code
+
+  airports2:
+    build: airport2
+    volumes:
+      - ./airport2:/code
+
 ```
 
 ## Running the code,
@@ -201,53 +206,59 @@ services:
 vineeth:Devops_Assignment vineeth_vijay$ docker-compose up --build
 Creating network "devops_assignment_default" with the default driver
 Building countries
-Step 1/5 : FROM openjdk:8u171-jdk-stretch
- ---> a2fbe0dde8c0
-Step 2/5 : MAINTAINER Vineeth "vineethvijay777@gmail.com"
- ---> Using cache
- ---> 9b48014cc5db
-Step 3/5 : WORKDIR /code
- ---> Using cache
- ---> 744038f9859b
-Step 4/5 : EXPOSE 8080
- ---> Using cache
- ---> 5dc2d818fb49
-Step 5/5 : ENTRYPOINT java -jar /code/run.jar
- ---> Using cache
- ---> 26b3f82b4de1
-Successfully built 26b3f82b4de1
-Successfully tagged devops_assignment_countries:latest
-Building airports
 Step 1/4 : FROM openjdk:8u171-jdk-stretch
  ---> a2fbe0dde8c0
-Step 2/4 : MAINTAINER Vineeth "vineethvijay777@gmail.com"
+Step 2/4 : WORKDIR /code
  ---> Using cache
- ---> 9b48014cc5db
-Step 3/4 : WORKDIR /code
+ ---> 329ba58f213c
+Step 3/4 : EXPOSE 8080
  ---> Using cache
- ---> 744038f9859b
+ ---> f2ba95aadff7
 Step 4/4 : ENTRYPOINT java -jar /code/run.jar
  ---> Using cache
- ---> 7a780da99325
-Successfully built 7a780da99325
-Successfully tagged devops_assignment_airports:latest
+ ---> 1b42a1a415f6
+Successfully built 1b42a1a415f6
+Successfully tagged devops_assignment_countries:latest
+Building airports1
+Step 1/3 : FROM openjdk:8u171-jdk-stretch
+ ---> a2fbe0dde8c0
+Step 2/3 : WORKDIR /code
+ ---> Using cache
+ ---> 329ba58f213c
+Step 3/3 : ENTRYPOINT java -jar /code/run.jar
+ ---> Using cache
+ ---> 0f0cfc036145
+Successfully built 0f0cfc036145
+Successfully tagged devops_assignment_airports1:latest
+Building airports2
+Step 1/3 : FROM openjdk:8u171-jdk-stretch
+ ---> a2fbe0dde8c0
+Step 2/3 : WORKDIR /code
+ ---> Using cache
+ ---> 329ba58f213c
+Step 3/3 : ENTRYPOINT java -jar /code/run.jar
+ ---> Using cache
+ ---> 0f0cfc036145
+Successfully built 0f0cfc036145
+Successfully tagged devops_assignment_airports2:latest
 Building nginx
 Step 1/2 : FROM nginx:alpine
  ---> bc7fdec94612
 Step 2/2 : ADD nginx.conf /etc/nginx/nginx.conf
- ---> Using cache
- ---> 9e4e89af8e4f
-Successfully built 9e4e89af8e4f
+ ---> b7bcf43d760d
+Successfully built b7bcf43d760d
 Successfully tagged devops_assignment_nginx:latest
-Creating devops_assignment_airports_1  ... done
+Creating devops_assignment_airports1_1 ... done
+Creating devops_assignment_airports2_1 ... done
 Creating devops_assignment_countries_1 ... done
 Creating devops_assignment_nginx_1     ... done
-Attaching to devops_assignment_countries_1, devops_assignment_airports_1, devops_assignment_nginx_1
+Attaching to devops_assignment_airports2_1, devops_assignment_airports1_1, devops_assignment_countries_1, devops_assignment_nginx_1
+airports2_1  | [info] play.api.Play - Application started (Prod)
+airports1_1  | [info] play.api.Play - Application started (Prod)
 countries_1  | [info] play.api.Play - Application started (Prod)
-airports_1   | [info] play.api.Play - Application started (Prod)
+airports2_1  | [info] p.c.s.AkkaHttpServer - Listening for HTTP on /0.0.0.0:8080
+airports1_1  | [info] p.c.s.AkkaHttpServer - Listening for HTTP on /0.0.0.0:8080
 countries_1  | [info] p.c.s.AkkaHttpServer - Listening for HTTP on /0.0.0.0:8080
-airports_1   | [info] p.c.s.AkkaHttpServer - Listening for HTTP on /0.0.0.0:8080
-countries_1  | [info] application - Start loading Countries
 
 ```
 
