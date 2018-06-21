@@ -15,6 +15,8 @@ To run In background,
 
 ```docker-compose up -d --build ```
 
+then view logs using ```docker-compose logs --follow```
+
 ## What you need
 
 1. Running docker service,
@@ -301,6 +303,66 @@ http://localhost:8000/airports/<code>
 
 eg: http://localhost:8000/airports/NL
 
+
+## Fail-over deploy to airport version-2
+
+1. Verify current deployed version is 1,
+http://localhost:8000/airports/EHAM --> returns []
+
+2. Deploy version-2 to airports2 container,
+`./deploy-airport-v2.sh airports2`
+
+3. Verify version1 is still up while deployment is progessing,
+http://localhost:8000/airports/NL
+
+4. Follow logs in another shell to see the deployment is successfull,
+`docker-compose logs --follow`
+
+5. Verify version-2 is coming sending a batch of requests(deponds on `max_fails` directive(set as 2) ,
+http://localhost:8000/airports/EHAM --> returns version2 json output
+
+6. Deploy version-2 to airports1 container,
+`./deploy-airport-v2.sh airports1`
+
+7. Follow logs in another shell to see the deployment is successfull,
+`docker-compose logs --follow`
+
+8. Verify version-2 is coming in successful,
+http://localhost:8000/airports/EHAM --> returns version2 json output
+
+
+## Deploy script
+
+```
+#!/bin/bash
+
+deploy_to_container=$1
+
+if [ -n "$1" ]
+then
+  echo -e "\nDeploying version-2 to $deploy_to_container "
+else
+  echo -e "Script needs deploy_to_container name - (airports1 / airports2) \n..Exiting..\n"
+  exit
+fi
+
+if [ $deploy_to_container == "airports2" ]
+then
+	docker-compose stop airports2
+	cp -f deploy/airports-assembly-1.1.0.jar airport2/run.jar
+	rm airport2/RUNNING_PID
+	docker-compose start airports2
+elif [ $deploy_to_container == "airports1" ]
+then
+	docker-compose stop airports1
+	cp -f deploy/airports-assembly-1.1.0.jar airport1/run.jar
+	rm airport1/RUNNING_PID
+	docker-compose start airports1
+else
+	echo "No matching container name"
+
+fi
+```
 
 
 ## Cleanup incase containers exits with leaving RUNNING_PID
