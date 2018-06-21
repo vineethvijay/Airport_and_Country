@@ -202,49 +202,50 @@ countries_1  | [info] application - Start loading Countries
 
 # Testing results,
 
-##Countries
+## Countries
 
-###To check countries service HTTP server is up,
+### To check countries service HTTP server is up,
 
 http://localhost:8000/countries/health/live
 
-###To check countries service HTTP server is ready,
+### To check countries service is ready,
 
 http://localhost:8000/countries/health/ready
 
-[The status returned 503 - when initializing, 200 when service up ]
+[http response status returned "503" - when initializing, 200 when service up ]
 
 
-###To check countries services,
+### To search for countries services,
 
 http://localhost:8000/countries
 
 
-###To check countries services - search for country by name / ISO code.
+### To search for countries services - country by name / ISO code.
 
 http://localhost:8000/countries/<code>
 
 eg: http://localhost:8000/countries/AD
 
-##Airports
 
-###To check airports service HTTP server is up,
+## Airports
+
+### To check airports service HTTP server is up,
 
 http://localhost:8000/airports/health/live
 
-###To check airports service HTTP server is ready,
+### To check airports service is ready,
 
 http://localhost:8000/airports/health/ready
 
 [http response status returned "503" - when initializing, 200 when service up ]
 
 
-###To check airports services,
+### To search for airports services,
 
 http://localhost:8000/airports
 
 
-###To check airports services - search for country by name / ISO code.
+### To search for airports services -  by name / ISO code.
 
 http://localhost:8000/airports/<code>
 
