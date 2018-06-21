@@ -62,6 +62,8 @@ ADD nginx.conf /etc/nginx/nginx.conf
 nginx.conf :
 
 ```
+
+
 worker_processes 1;
  
 events { worker_connections 512; }
@@ -72,26 +74,26 @@ http {
 
     server {
         listen 80;
-        server_name localhost;
         
-        location / {
+        location /countries {
             return 503 "503";
+        }
+
+        location /airports {
+            return 503 "503 ";
         }
 
     }
 
-    upstream countries-server-health {
-        server countries:8080 fail_timeout=1s;
-        server localhost:80;
-    }
-
-  
     upstream countries-server {
-        server countries:8080;
+        server countries:8080 fail_timeout=1s;
+        server nginx:80 backup;
     }
 
-    upstream airport-server {
-        server airports:8080;
+
+    upstream airports-server {
+        server airports:8080 fail_timeout=1s;
+        server nginx:80 backup;
     }
  
 
@@ -103,31 +105,24 @@ http {
             proxy_pass         http://countries-server;
             proxy_redirect     off;
             proxy_set_header   Host $host;
-
         }
+
 
         location /countries/health/live {
             return 200 "200";
         }
 
         location /countries/health/ready {
-            proxy_pass         http://countries-server-health/countries;
+            proxy_pass         http://countries-server/countries;
             proxy_redirect     off;
-
-
             proxy_read_timeout   1s;
-            proxy_next_upstream     error timeout http_500 http_502 http_503 http_504;
-
-            #proxy_intercept_errors on;
-            #error_page 500 501 503 504 /countries/health/ready;
-            #error_page 300 301 301 303 304 /countries/health/ready;
 
         }
 
 
         location /airports {
 
-            proxy_pass         http://airport-server;
+            proxy_pass         http://airports-server;
             proxy_redirect     off;
             proxy_set_header   Host $host;
 
@@ -137,6 +132,12 @@ http {
             return 200 "200";
         }
 
+        location /airports/health/ready {
+            proxy_pass         http://airports-server/airports;
+            proxy_redirect     off;
+            proxy_read_timeout   1s;
+
+        }
 
     }
  
