@@ -4,7 +4,7 @@ deploy_to_container=$1
 
 if [ -n "$1" ]
 then
-  echo -e "\nDeploying version-2 to $deploy_to_container "
+  echo -e "\nDeploying version-1 to $deploy_to_container "
 else
   echo -e "Script needs deploy_to_container name - (airports1 / airports2) \n..Exiting..\n"
   exit
