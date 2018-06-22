@@ -37,7 +37,6 @@ Countries Service :
 FROM openjdk:8u171-jdk-stretch
 
 WORKDIR /code
-EXPOSE 8080
 
 ENTRYPOINT java -jar /code/run.jar
 
@@ -67,18 +66,17 @@ nginx.conf :
 ```
 
 
-
 worker_processes 1;
- 
+
 events { worker_connections 512; }
- 
+
 http {
- 
+
     sendfile on;
 
     server {
         listen 80;
-        
+
         location /countries {
             return 503 "503";
         }
@@ -96,15 +94,15 @@ http {
 
 
     upstream airports-server {
-        server airports1:8080 fail_timeout=1s max_fails=5;
-        server airports2:8080 fail_timeout=1s;
-        server nginx:80 backup;
+        server airports1:8080 backup;
+        server airports2:8080 backup;
+        #server nginx:80 backup;
     }
- 
+
 
     server {
         listen 8000;
- 
+
         location /countries {
 
             proxy_pass         http://countries-server;
@@ -140,13 +138,14 @@ http {
         location /airports/health/ready {
             proxy_pass         http://airports-server/airports;
             proxy_redirect     off;
-            proxy_read_timeout   1s;
+            proxy_read_timeout   2s;
 
         }
 
     }
- 
+
 }
+
 
 ```
 
@@ -266,23 +265,23 @@ countries_1  | [info] p.c.s.AkkaHttpServer - Listening for HTTP on /0.0.0.0:8080
 
 ## Countries
 
-### To check countries service HTTP server is up,
+To check countries service HTTP server is up,
 
 http://localhost:8000/countries/health/live
 
-### To check countries service is ready,
+To check countries service is ready,
 
 http://localhost:8000/countries/health/ready
 
 [http response status returned "503" - when initializing, 200 when service up ]
 
 
-### To search for countries services,
+To search for countries services,
 
 http://localhost:8000/countries
 
 
-### To search for countries services - country by name / ISO code.
+To search for countries services - country by name / ISO code.
 
 http://localhost:8000/countries/<code>
 
@@ -291,23 +290,23 @@ eg: http://localhost:8000/countries/AD
 
 ## Airports
 
-### To check airports service HTTP server is up,
+To check airports service HTTP server is up,
 
 http://localhost:8000/airports/health/live
 
-### To check airports service is ready,
+To check airports service is ready,
 
 http://localhost:8000/airports/health/ready
 
 [http response status returned "503" - when initializing, 200 when service up ]
 
 
-### To search for airports services,
+To search for airports services,
 
 http://localhost:8000/airports
 
 
-### To search for airports services -  by name / ISO code.
+To search for airports services -  by name / ISO code.
 
 http://localhost:8000/airports/<code>
 

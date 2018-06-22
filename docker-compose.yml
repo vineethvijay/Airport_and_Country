@@ -6,11 +6,6 @@ services:
     #command: "echo 'Running nginx reverse proxy.. Service up.. Listening on 0.0.0.0:8000'"
     ports:
       - "8000:8000"
-    links:
-      - countries
-      - airports1
-      - airports2
-    
   countries:
     build: countries
     volumes:
