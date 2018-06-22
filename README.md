@@ -94,9 +94,9 @@ http {
 
 
     upstream airports-server {
-        server airports1:8080 backup;
-        server airports2:8080 backup;
-        #server nginx:80 backup;
+        server airports1:8080 fail_timeout=1s max_fails=1;
+        server airports2:8080 down;
+        server nginx:80 backup;
     }
 
 
@@ -145,6 +145,7 @@ http {
     }
 
 }
+
 
 
 ```
